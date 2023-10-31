@@ -1,0 +1,65 @@
+# Build the image with the my-custom-dockerfile:v1.0 tag
+docker build -t my-custom-dockerfile:v1.0 my-custom-dockerfile
+docker run --rm --env GREETINGS=Hi my-custom-dockerfile:v1.0
+# Build the image with the my-custom-dockerfile:v2.0 tag
+docker build -t my-custom-dockerfile:v2.0 my-custom-dockerfile
+docker run --rm my-custom-dockerfile:v2.0 /app/data
+docker run --rm --entrypoint /bin/sh my-custom-dockerfile:v2.0 -c "touch /app/data/my-file.txt"
+
+# Run the image with the my-custom-dockerfile:v2.0 tag and mount a volume
+docker run --rm -v "%cd%/my-custom-dockerfile/my-data:/app/data" --entrypoint /bin/sh my-custom-dockerfile:v2.0 -c "touch /app/data/my-file.txt"
+
+docker run --rm -v "%cd%/my-custom-dockerfile/my-data:/app/data" my-custom-dockerfile:v2.0
+
+docker build -t my-custom-dockerfile:v3.0 my-custom-dockerfile
+
+
+# Run the image with the my-custom-dockerfile:v3.0 tag
+docker run --rm -p 8080:5000 -v "$(pwd)/my-custom-dockerfile/my-data:/app/data" -v "$(pwd)/my-custom-dockerfile/my-config:/app/config" my-custom-dockerfile:v3.0
+
+
+# Run the image with the my-custom-dockerfile:v3.0 tag
+docker run --rm -d -p 8080:5000 -v "$(pwd)/my-custom-dockerfile/my-data:/app/data" -v "$(pwd)/my-custom-dockerfile/my-config:/app/config" my-custom-dockerfile:v3.0
+
+$env:GITHUB_CR_PAT="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"
+
+$GITHUB_CR_PAT="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"
+
+echo $GITHUB_CR_PAT | docker login ghcr.io -u lucaslattion --password-stdin
+
+# Tag the image with the correct format
+docker tag my-custom-dockerfile:v3.0 ghcr.io/lucaslattion/my-custom-dockerfile:v3.0
+
+# List all the images
+docker images
+
+
+# Publish the image on GitHub Container Registry
+docker push ghcr.io/lucaslattion/my-custom-dockerfile:v3.0
+
+
+# Pull the image from GitHub Container Registry
+docker pull ghcr.io/lucaslattion/my-custom-dockerfile:v3.0
+
+# Run the image with Docker
+docker run --rm -p 8080:5000 -v "$(pwd)/my-custom-dockerfile/my-data:/app/data" -v "$(pwd)/my-custom-dockerfile/my-config:/app/config" ghcr.io/lucaslattion/my-custom-dockerfile:v3.0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
